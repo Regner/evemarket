@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>EVE Online Market</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        
+    </head>
+    <body>
+        <div class="container" id="market">
+            <div v-if="isFinishedLoading()">
+                <label for="regionSelection">Region:</label>
+                <select id="regionSelection" class="form-control">
+                    <option v-for="region in regionsSorted" value="{{ region.id }}">{{ region.name }}</option>
+                </select>
+                <ul v-for="mg in marketGroupsSorted">
+                    <item class="item" v-bind:model="mg"></item>
+                </ul>
+            </div>
+            
+            <div class="progress" v-else>
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100" v-bind:width=loadingProgress>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/x-template" id="item-template">
+          <li>
+            <div>{{ model.name }}</div>
+          </li>
+        </script>
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.7.2/vue-resource.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>
+</html>
