@@ -37,153 +37,77 @@ new Vue({
   el: "#market",
 
   data: {
-    regions: {},
-    regionsSorted: [],
-    marketTypes: {},
-    marketGroups: {},
-    marketGroupsSorted: [],
-    totalResources: 0,
-    loadedResources: 0,
-    loadingProgress: 0,
-    finishedLoading: false
+    regions: [],
+    marketGroupsLookup: {},
+    marketGroupsList: [],
+    regionsLoaded: false,
+    groupsLoaded: false,
+    allLoaded: false
   },
 
   watch: {
-    totalResources: function(value, oldValue) {
+    regionsLoaded: function(value, oldValue) {
+      if (this.groupsLoaded == true) {
+        this.allLoaded = true;
+      };
     },
 
-    loadedResources: function(value, oldValue) {
-      this.loadingProgress = 100 * this.loadedResources / this.totalResources;
-    },
-
-    finishedLoading: function(value, oldValue) {
-      // console.log(this.finishedLoading);
-    },
-
-    loadingProgress: function(value, oldValue) {
-      if (this.totalResources >= 5000) {
-        if (this.loadedResources == this.totalResources) {
-          this.sortData();
-
-          this.finishedLoading = true;
-        };
+    groupsLoaded: function(value, oldValue) {
+      if (this.regionsLoaded == true) {
+        this.allLoaded = true;
       };
     }
   },
 
   created: function() {
     this.$http.get(BASE_CREST_URL).then(function(response) {
-      // this.getTypes(response.data.marketTypes.href);
       this.getMarketGroups(response.data.marketGroups.href);
       this.getRegions(response.data.regions.href);
     });
   },
 
   methods: {
-    "getTypes": function(itemTypesURL) {
-      this.crawlCREST(itemTypesURL, this.marketTypes, true);
-    },
-
     "getRegions": function(regionsURL) {
-      this.crawlCREST(regionsURL, this.regions, true);
+      this.$http.get(regionsURL).then(function(response) {
+        for (var i = 0; i < response.data.items.length; i++) {
+          if (response.data.items[i].id < 11000000) {
+            this.regions.push(response.data.items[i]);
+          };
+        };
+
+        this.regionsLoaded = true;
+      });
     },
 
     "getMarketGroups": function(marketGroupsURL) {
-      this.crawlCREST(marketGroupsURL, this.marketGroups, true);
-    },
-
-    "crawlCREST": function(url, targetObj, firstPage = false) {
-      this.$http.get(url).then(function(response) {
-        if (firstPage) {
-          this.totalResources += response.data.totalCount;
-        }
-
+      this.$http.get(marketGroupsURL).then(function(response) {
         for (var i = 0; i < response.data.items.length; i++) {
-          targetObj[response.data.items[i].id] = response.data.items[i];
-          this.loadedResources++
+          if (!response.data.items[i].hasOwnProperty("children")) {
+            response.data.items[i].children = []
+          };
+
+          response.data.items[i].isGroup = true;
+
+          this.marketGroupsLookup[response.data.items[i].id] = response.data.items[i];
         };
 
-        if (response.data.hasOwnProperty("next")) {
-          this.crawlCREST(response.data.next.href, targetObj);
-        }
+        for (var groupID in this.marketGroupsLookup) {
+          var thisMaretGroup = this.marketGroupsLookup[groupID];
+
+          if (thisMaretGroup.hasOwnProperty("parentGroup")) {
+            this.marketGroupsLookup[thisMaretGroup.parentGroup.id].children.push(thisMaretGroup);
+          } else {
+            this.marketGroupsList.push(thisMaretGroup);
+          };
+        };
+
+        this.groupsLoaded = true;
       });
     },
 
     "isFinishedLoading": function() {
-      if (this.finishedLoading == true) {
-        return true
-      } else {
-        return false
-      }
-    },
-
-    "sortData": function() {
-      this.sortMarketGroups();
-      this.sortRegions();
-      // this.sortMarketTypes();
-      // console.log(this.marketGroups);
-
-      // for (var groupID in this.marketGroups) {
-      //   this.marketGroups[parentGroupID].children.sort(function(a, b) {
-      //     sortCrestThings(a, b);
-      //   });
-      // };
-    },
-
-    "sortMarketGroups": function() {
-      for (var groupID in this.marketGroups) {
-        if (!this.marketGroups[groupID].hasOwnProperty("children")) {
-          this.marketGroups[groupID].children = []
-        };
-
-        this.marketGroups[groupID].isGroup = true;
-      };
-
-      for (var groupID in this.marketGroups) {
-        if (this.marketGroups[groupID].hasOwnProperty("parentGroup")) {
-          parentGroupID = this.marketGroups[groupID].parentGroup.id;
-          this.marketGroups[parentGroupID].children.push(this.marketGroups[groupID]);
-        } else {
-          this.marketGroupsSorted.push(this.marketGroups[groupID]);
-        };
-      };
-
-      this.marketGroupsSorted.sort(function(a, b) {
-        sortCrestThings(a, b);
-      });
-    },
-
-    "sortMarketTypes": function() {
-      for (var typeID in this.marketTypes) {
-        this.marketTypes[typeID].isGroup = false;
-        marketGroupID = this.marketTypes[typeID].marketGroup.id;
-        this.marketGroups[marketGroupID].children.push(this.marketTypes[typeID]);
-      };
-    },
-
-    "sortRegions": function() {
-      for (var regionID in this.regions) {
-        // WH regions start at 11000000 and we want to skip them
-        if (regionID < 11000000) {
-          this.regionsSorted.push(this.regions[regionID])
-        }
-      }
-
-      this.regionsSorted.sort(function(a, b) {
-        sortCrestThings(a, b);
-      })
-    },
+      return this.allLoaded;
+    }
   },
 });
 
-
-function sortCrestThings(a, b) {
-  var nameA=a.name.toLowerCase();
-  var nameB=b.name.toLowerCase();
-
-  if (nameA < nameB)
-    return -1
-  if (nameA > nameB)
-    return 1
-  return 0
-};

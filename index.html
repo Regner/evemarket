@@ -13,16 +13,11 @@
             <div v-if="isFinishedLoading()">
                 <label for="regionSelection">Region:</label>
                 <select id="regionSelection" class="form-control">
-                    <option v-for="region in regionsSorted" value="{{ region.id }}">{{ region.name }}</option>
+                    <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
                 </select>
-                <ul v-for="mg in marketGroupsSorted">
+                <ul v-for="mg in marketGroupsList">
                     <item class="item" v-bind:model="mg"></item>
                 </ul>
-            </div>
-
-            <div class="progress" v-else>
-                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100" v-bind:width=loadingProgress>
-                </div>
             </div>
         </div>
 
