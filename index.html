@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>EVE Online Market</title>
-        
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
-        
+
     </head>
     <body>
         <div class="container" id="market">
@@ -19,19 +19,26 @@
                     <item class="item" v-bind:model="mg"></item>
                 </ul>
             </div>
-            
+
             <div class="progress" v-else>
                 <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ loadingProgress }}" aria-valuemin="0" aria-valuemax="100" v-bind:width=loadingProgress>
                 </div>
             </div>
         </div>
-        
+
         <script type="text/x-template" id="item-template">
-          <li>
-            <div>{{ model.name }}</div>
-          </li>
+            <li>
+                <div
+                  v-bind:class="{bold: model.isGroup}"
+                  @click="toggle">
+                    {{ model.name }}
+                </div>
+                <ul v-show="open" v-if="model.isGroup">
+                    <item  v-for="model in model.children" v-bind:model="model"></item>
+                </ul>
+            </li>
         </script>
-        
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
