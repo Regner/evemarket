@@ -49,16 +49,16 @@
             <table class="table orders table-sm" id="sellOrdersTable">
                 <thead>
                     <tr>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                        <th class="text-sm-center">Location</th>
+                        <th class="text-sm-center">Price</th>
+                        <th class="text-sm-center">Quantity</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="order in sellOrders">
                         <td>{{ order.location.name }}</td>
-                        <td>{{ order.price }}</td>
-                        <td>{{ order.volume }}</td>
+                        <td class="text-sm-right">{{ order.price | isk }}</td>
+                        <td class="text-sm-right">{{ order.volume }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -74,8 +74,8 @@
                 <tbody>
                     <tr v-for="order in sellOrders">
                         <td>{{ order.location.name }}</td>
-                        <td>{{ order.price }}</td>
-                        <td>{{ order.volume }}</td>
+                        <td class="text-sm-right">{{ order.price | isk }}</td>
+                        <td class="text-sm-right">{{ order.volume }}</td>
                     </tr>
                 </tbody>
             </table>

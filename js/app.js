@@ -130,6 +130,11 @@ Vue.component('orders', {
 // })
 
 
+Vue.filter('isk', function (value) {
+  return value.toLocaleString("us") + " ISK"
+})
+
+
 new Vue({
   el: "#market",
 
