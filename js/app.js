@@ -5,10 +5,11 @@ var BASE_CREST_URL = "https://crest-tq.eveonline.com/";
 var DEFAULT_REGION = 10000002;  // The Forge
 
 
-Vue.component('item', {
-  template: '#item-template',
+Vue.component('market-group', {
+  template: '#market-group-template',
   props: {
-    model: Object
+    model: Object,
+    selectedType: null
   },
 
   data: function () {
@@ -17,18 +18,35 @@ Vue.component('item', {
     }
   },
 
-  computed: {
-    isFolder: function () {
-      return this.model.isGroup
-    }
-  },
-
   methods: {
     toggle: function () {
-      if (this.model.isGroup) {
-        this.open = !this.open
+      if (!this.model.typesDownloaded && this.model.children.length == 0) {
+        this.model.typeChildren = []
+
+        this.$http.get(this.model.types.href).then(function(response) {
+          for (var i = 0; i < response.data.items.length; i++) {
+            this.model.typeChildren.push(response.data.items[i]);
+          };
+
+          this.model.typesDownloaded = true;
+        });
       }
+      
+      this.open = !this.open;
+    },
+
+    test: function () {
+      return this.model.typesDownloaded;
     }
+  }
+})
+
+
+Vue.component('market-item', {
+  template: '#market-item-template',
+  props: {
+    model: Object,
+    selectedType: null
   }
 })
 
@@ -42,7 +60,8 @@ new Vue({
     marketGroupsList: [],
     regionsLoaded: false,
     groupsLoaded: false,
-    allLoaded: false
+    allLoaded: false,
+    selectedType: null
   },
 
   watch: {
@@ -86,7 +105,7 @@ new Vue({
             response.data.items[i].children = []
           };
 
-          response.data.items[i].isGroup = true;
+          response.data.items[i].typesDownloaded = false;
 
           this.marketGroupsLookup[response.data.items[i].id] = response.data.items[i];
         };

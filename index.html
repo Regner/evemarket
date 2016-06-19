@@ -15,22 +15,27 @@
                 <select id="regionSelection" class="form-control">
                     <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
                 </select>
-                <ul v-for="mg in marketGroupsList">
-                    <item class="item" v-bind:model="mg"></item>
+                <ul>
+                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg"></market-group>
                 </ul>
             </div>
         </div>
 
-        <script type="text/x-template" id="item-template">
+        <script type="text/x-template" id="market-group-template">
             <li>
-                <div
-                  v-bind:class="{bold: model.isGroup}"
-                  @click="toggle">
-                    {{ model.name }}
-                </div>
-                <ul v-show="open" v-if="model.isGroup">
-                    <item  v-for="model in model.children" v-bind:model="model"></item>
+                <div v-on:click="toggle">{{ model.name }}</div>
+                <ul v-show="open" >
+                    <market-group  v-for="model in model.children" v-bind:model="model"></market-group>
+                    <div v-if="test()">
+                        <market-item  v-for="model in model.typeChildren" v-bind:model="model"></market-item>
+                    </div>
                 </ul>
+            </li>
+        </script>
+
+        <script type="text/x-template" id="market-item-template">
+            <li>
+                <div>{{ model.type.name }}</div>
             </li>
         </script>
 
