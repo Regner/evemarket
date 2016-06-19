@@ -1,31 +1,35 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>EVE Online Market</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
 
     </head>
     <body>
-        <div class="container" id="market">
-            <div v-if="isFinishedLoading()">
-                <label for="regionSelection">Region:</label>
-                <select id="regionSelection" class="form-control">
-                    <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
-                </select>
-                <ul>
-                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selected-type.sync="selectedType"></market-group>
-                </ul>
-                <orders v-bind:selected-type="selectedType"></orders>
+        <div class="container-fluid" id="market">
+            <div class="row" v-if="isFinishedLoading()">
+                <div class="col-sm-2">
+<!--                     <select id="regionSelection" class="form-control">
+                        <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
+                    </select> -->
+                    <ul>
+                        <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selected-type.sync="selectedType"></market-group>
+                    </ul>
+                </div>
+                <div class="col-sm-10">
+                    <orders v-bind:selected-type="selectedType"></orders>
+                </div>
             </div>
+
         </div>
 
         <script type="text/x-template" id="market-group-template">
             <li>
-                <div v-on:click="toggle">{{ model.name }}</div>
-                <ul v-show="open" >
+                <label v-on:click="toggle">{{ model.name }}</label>
+                <ul v-show="open">
                     <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-group>
                     <div v-if="model.typesDownloaded">
                         <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-item>
@@ -36,45 +40,45 @@
 
         <script type="text/x-template" id="market-item-template">
             <li>
-                <div v-on:click="selected">{{ model.type.name }}</div>
+                <label v-on:click="selected">{{ model.type.name }}</label>
             </li>
         </script>
 
         <script type="text/x-template" id="orders-template">
-            <div>
-                <h1>Sell Orders</h1>
-                <table>
+            <h1>Sell Orders</h1>
+            <table class="table" id="sellOrdersTable">
+                <thead>
                     <tr>
                         <th>Location</th>
                         <th>Price</th>
                         <th>Quantity</th>
                     </tr>
+                </thead>
+                <tbody>
                     <tr v-for="order in sellOrders">
                         <td>{{ order.location.name }}</td>
                         <td>{{ order.price }}</td>
                         <td>{{ order.volume }}</td>
                     </tr>
-                </table>
-            </div>
-            <div>
-                <h1>Buy Orders</h1>
-                <table>
-                    <tr>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                    <tr v-for="order in buyOrders">
-                        <td>{{ order.location.name }}</td>
-                        <td>{{ order.price }}</td>
-                        <td>{{ order.volume }}</td>
-                    </tr>
-                </table>
-            </div>
+                </tbody>
+            </table>
+            <h1>Buy Orders</h1>
+            <table class="table" id="buyOrdersTable">
+                <tr>
+                    <th>Location</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                </tr>
+                <tr v-for="order in buyOrders">
+                    <td>{{ order.location.name }}</td>
+                    <td>{{ order.price }}</td>
+                    <td>{{ order.volume }}</td>
+                </tr>
+            </table>
         </script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.7.2/vue-resource.min.js"></script>
         <script src="js/app.js"></script>

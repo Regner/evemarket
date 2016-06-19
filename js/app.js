@@ -32,6 +32,15 @@ Vue.component('market-group', {
         });
       }
 
+      this.model.children.sort(function(a, b) {
+        var nameA=a.name.toLowerCase();
+        var nameB=b.name.toLowerCase();
+
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+        return 0
+      })
+
       this.open = !this.open;
     }
   }
@@ -190,6 +199,15 @@ new Vue({
           };
         };
 
+        this.marketGroupsList.sort(function(a, b) {
+          var nameA=a.name.toLowerCase();
+          var nameB=b.name.toLowerCase();
+
+          if (nameA < nameB) return -1;
+          if (nameA > nameB) return 1;
+          return 0
+        })
+
         this.groupsLoaded = true;
       });
     },
@@ -199,4 +217,3 @@ new Vue({
     }
   },
 });
-
