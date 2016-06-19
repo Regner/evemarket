@@ -1,9 +1,31 @@
 
 
-.bold {
-  font-weight: bold;
+@font-face{
+    font-family: "evesansneue";
+    src: url("../fonts/evesansneue-regular.ttf")
+}
+
+body {
+    color: #ffffff;
+    background: #282828;
+    font-family: evesansneue;
+}
+
+.tree {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.tree-entry {
+    padding-left: 15px;
+    font-size: 14px;
+}
+
+.orders {
+    font-size: 14px;
 }
 
 [v-cloak] {
-  display: none;
+    display: none;
 }

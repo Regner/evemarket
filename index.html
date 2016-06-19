@@ -11,11 +11,11 @@
     <body>
         <div class="container-fluid" id="market">
             <div class="row" v-if="isFinishedLoading()">
-                <div class="col-sm-2">
+                <div class="col-sm-2 nav">
 <!--                     <select id="regionSelection" class="form-control">
                         <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
                     </select> -->
-                    <ul>
+                    <ul class="tree">
                         <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selected-type.sync="selectedType"></market-group>
                     </ul>
                 </div>
@@ -27,9 +27,9 @@
         </div>
 
         <script type="text/x-template" id="market-group-template">
-            <li>
+            <li class="tree-entry">
                 <label v-on:click="toggle">{{ model.name }}</label>
-                <ul v-show="open">
+                <ul v-show="open" class="tree">
                     <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-group>
                     <div v-if="model.typesDownloaded">
                         <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-item>
@@ -39,14 +39,14 @@
         </script>
 
         <script type="text/x-template" id="market-item-template">
-            <li>
+            <li class="tree-entry">
                 <label v-on:click="selected">{{ model.type.name }}</label>
             </li>
         </script>
 
         <script type="text/x-template" id="orders-template">
-            <h1>Sell Orders</h1>
-            <table class="table" id="sellOrdersTable">
+            <h3>Sell Orders</h3>
+            <table class="table orders table-sm" id="sellOrdersTable">
                 <thead>
                     <tr>
                         <th>Location</th>
@@ -62,18 +62,22 @@
                     </tr>
                 </tbody>
             </table>
-            <h1>Buy Orders</h1>
-            <table class="table" id="buyOrdersTable">
-                <tr>
-                    <th>Location</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                </tr>
-                <tr v-for="order in buyOrders">
-                    <td>{{ order.location.name }}</td>
-                    <td>{{ order.price }}</td>
-                    <td>{{ order.volume }}</td>
-                </tr>
+            <h3>Buy Orders</h3>
+            <table class="table orders table-sm" id="sellOrdersTable">
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="order in sellOrders">
+                        <td>{{ order.location.name }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.volume }}</td>
+                    </tr>
+                </tbody>
             </table>
         </script>
 
