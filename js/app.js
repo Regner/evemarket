@@ -9,7 +9,7 @@ Vue.component('market-group', {
   template: '#market-group-template',
   props: {
     model: Object,
-    selectedType: null
+    selectedtype: null
   },
 
   data: function () {
@@ -31,12 +31,8 @@ Vue.component('market-group', {
           this.model.typesDownloaded = true;
         });
       }
-      
-      this.open = !this.open;
-    },
 
-    test: function () {
-      return this.model.typesDownloaded;
+      this.open = !this.open;
     }
   }
 })
@@ -46,7 +42,14 @@ Vue.component('market-item', {
   template: '#market-item-template',
   props: {
     model: Object,
-    selectedType: null
+    selectedtype: null
+  },
+
+  methods: {
+    selected: function () {
+      console.log("selected new type")
+      this.selectedtype = this.model.id;
+    }
   }
 })
 
@@ -61,7 +64,7 @@ new Vue({
     regionsLoaded: false,
     groupsLoaded: false,
     allLoaded: false,
-    selectedType: null
+    selectedtype: null
   },
 
   watch: {

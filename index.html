@@ -16,7 +16,7 @@
                     <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
                 </select>
                 <ul>
-                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg"></market-group>
+                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selectedtype="selectedtype"></market-group>
                 </ul>
             </div>
         </div>
@@ -25,9 +25,9 @@
             <li>
                 <div v-on:click="toggle">{{ model.name }}</div>
                 <ul v-show="open" >
-                    <market-group  v-for="model in model.children" v-bind:model="model"></market-group>
-                    <div v-if="test()">
-                        <market-item  v-for="model in model.typeChildren" v-bind:model="model"></market-item>
+                    <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selectedtype="selectedtype"></market-group>
+                    <div v-if="model.typesDownloaded">
+                        <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selectedtype="selectedtype"></market-item>
                     </div>
                 </ul>
             </li>
@@ -35,7 +35,7 @@
 
         <script type="text/x-template" id="market-item-template">
             <li>
-                <div>{{ model.type.name }}</div>
+                <div v-on:click="selected">{{ model.type.name }}</div>
             </li>
         </script>
 
