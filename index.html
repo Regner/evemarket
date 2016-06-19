@@ -16,8 +16,9 @@
                     <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
                 </select>
                 <ul>
-                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selectedtype="selectedtype"></market-group>
+                    <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selected-type.sync="selectedType"></market-group>
                 </ul>
+                <orders v-bind:selected-type="selectedType"></orders>
             </div>
         </div>
 
@@ -25,9 +26,9 @@
             <li>
                 <div v-on:click="toggle">{{ model.name }}</div>
                 <ul v-show="open" >
-                    <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selectedtype="selectedtype"></market-group>
+                    <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-group>
                     <div v-if="model.typesDownloaded">
-                        <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selectedtype="selectedtype"></market-item>
+                        <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-item>
                     </div>
                 </ul>
             </li>
@@ -37,6 +38,39 @@
             <li>
                 <div v-on:click="selected">{{ model.type.name }}</div>
             </li>
+        </script>
+
+        <script type="text/x-template" id="orders-template">
+            <div>
+                <h1>Sell Orders</h1>
+                <table>
+                    <tr>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                    <tr v-for="order in sellOrders">
+                        <td>{{ order.location.name }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.volume }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <h1>Buy Orders</h1>
+                <table>
+                    <tr>
+                        <th>Location</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                    <tr v-for="order in buyOrders">
+                        <td>{{ order.location.name }}</td>
+                        <td>{{ order.price }}</td>
+                        <td>{{ order.volume }}</td>
+                    </tr>
+                </table>
+            </div>
         </script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>

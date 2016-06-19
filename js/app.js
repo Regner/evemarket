@@ -2,24 +2,24 @@
 
 var BASE_CREST_URL = "https://crest-tq.eveonline.com/";
 // var BASE_CREST_URL = "https://api-sisi.testeveonline.com/";
-var DEFAULT_REGION = 10000002;  // The Forge
+var DEFAULT_REGION = "https://crest-tq.eveonline.com/market/10000002/orders/";  // The Forge
 
 
 Vue.component('market-group', {
   template: '#market-group-template',
-  props: {
-    model: Object,
-    selectedtype: null
-  },
+  props: [
+    'model',
+    'selectedType'
+  ],
 
-  data: function () {
+  data: function() {
     return {
       open: false
     }
   },
 
   methods: {
-    toggle: function () {
+    toggle: function() {
       if (!this.model.typesDownloaded && this.model.children.length == 0) {
         this.model.typeChildren = []
 
@@ -40,18 +40,85 @@ Vue.component('market-group', {
 
 Vue.component('market-item', {
   template: '#market-item-template',
-  props: {
-    model: Object,
-    selectedtype: null
-  },
+  props: [
+    'model',
+    'selectedType'
+  ],
 
   methods: {
-    selected: function () {
-      console.log("selected new type")
-      this.selectedtype = this.model.id;
+    selected: function() {
+      this.selectedType = this.model.type.href;
     }
   }
 })
+
+
+Vue.component('orders', {
+  template: '#orders-template',
+  data: function() {
+    return {
+      buyOrders: [],
+      sellOrders: []
+    }
+  },
+
+  props: [
+    'selectedType'
+  ],
+
+  watch: {
+    selectedType: function() {
+      this.buyOrders = [];
+      this.sellOrders = [];
+
+      this.$http.get(DEFAULT_REGION, {"type": this.selectedType}).then(function(response) {
+        tmpBuyOrders = [];
+        tmpSellOrders = [];
+
+        response.data.items.forEach(function(element, index, array) {
+          if (element.buy) {
+            tmpBuyOrders.push(element);
+          } else {
+            tmpSellOrders.push(element);
+          }
+        })
+
+
+
+        tmpBuyOrders.sort(function(a, b) {
+          if (a.price < b.price) return -1
+          if (a.price > b.price) return 1
+          return 0
+        })
+
+        tmpSellOrders.sort(function(a, b) {
+          if (a.price < b.price) return -1
+          if (a.price > b.price) return 1
+          return 0
+        })
+
+        this.buyOrders = tmpBuyOrders;
+        this.sellOrders = tmpSellOrders;
+      })
+    }
+  }
+})
+
+
+// Vue.component('region-selector', {
+//   template: '#region-selector-template',
+
+//   props: [
+//     'regions',
+//     'selectedRegion'
+//   ],
+
+//   methods: {
+//     selectRegion: function() {
+//       this.selectedRegion = this.model.type.href;
+//     }
+//   }
+// })
 
 
 new Vue({
@@ -64,7 +131,7 @@ new Vue({
     regionsLoaded: false,
     groupsLoaded: false,
     allLoaded: false,
-    selectedtype: null
+    selectedType: null
   },
 
   watch: {
