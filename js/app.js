@@ -77,6 +77,18 @@ Vue.component('orders', {
 
   watch: {
     selectedType: function() {
+      this.updateOrders();
+    }
+  },
+
+  created: function() {
+    if (this.selectedType) {
+      this.updateOrders();
+    }
+  },
+
+  methods: {
+    "updateOrders": function() {
       this.buyOrders = [];
       this.sellOrders = [];
 
@@ -108,7 +120,7 @@ Vue.component('orders', {
 
         this.buyOrders = tmpBuyOrders;
         this.sellOrders = tmpSellOrders;
-      })
+      })     
     }
   }
 })
@@ -131,7 +143,7 @@ Vue.component('orders', {
 
 
 Vue.filter('isk', function (value) {
-  return value.toLocaleString("us") + " ISK"
+  return value.toLocaleString("us", {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " ISK"
 })
 
 
@@ -159,10 +171,19 @@ new Vue({
       if (this.regionsLoaded == true) {
         this.allLoaded = true;
       };
+    },
+
+    selectedType: function(value, oldValue) {
+      window.history.pushState("object or string", "Title", "?type=" + value);
     }
   },
 
   created: function() {
+    qs = getQueryParams()
+    if (qs.hasOwnProperty("type")) {
+      this.selectedType = qs.type
+    }
+
     this.$http.get(BASE_CREST_URL).then(function(response) {
       this.getMarketGroups(response.data.marketGroups.href);
       this.getRegions(response.data.regions.href);
@@ -222,3 +243,16 @@ new Vue({
     }
   },
 });
+
+
+function getQueryParams() {
+  qs = document.location.search.split('+').join(' ');
+
+  var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+  while (tokens = re.exec(qs)) {
+    params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+  }
+
+  return params;
+}
