@@ -126,6 +126,40 @@ Vue.component('orders', {
 })
 
 
+Vue.component('type-header', {
+  template: '#type-header-template',
+  data: function() {
+    return {
+      type: Object
+    }
+  },
+
+  props: [
+    'selectedType'
+  ],
+
+  watch: {
+    selectedType: function() {
+      this.updateType();
+    }
+  },
+
+  created: function() {
+    if (this.selectedType) {
+      this.updateType();
+    }
+  },
+
+  methods: {
+    "updateType": function() {
+      this.$http.get(this.selectedType).then(function(response) {
+        this.type = response.data;
+      }) 
+    }
+  }
+})
+
+
 // Vue.component('region-selector', {
 //   template: '#region-selector-template',
 

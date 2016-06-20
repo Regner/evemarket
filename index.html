@@ -20,6 +20,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-10">
+                    <type-header v-bind:selected-type="selectedType"></type-header>
                     <orders v-bind:selected-type="selectedType"></orders>
                 </div>
             </div>
@@ -79,6 +80,13 @@
                     </tr>
                 </tbody>
             </table>
+        </script>
+
+        <script type="text/x-template" id="type-header-template">
+            <div>
+                <h2>{{ type.name }}</h2>
+                <p>{{ type.description }}</p>
+            </div>
         </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
