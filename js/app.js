@@ -136,7 +136,7 @@ Vue.component('type-header', {
   template: '#type-header-template',
   data: function() {
     return {
-      type: Object
+      type: null
     }
   },
 

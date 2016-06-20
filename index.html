@@ -100,10 +100,11 @@
 
         <script type="text/x-template" id="type-header-template">
             <div>
-                <h2>
+                <h2 v-if="type">
                     <img v-bind:src="imageUrl" class="img-rounded">
                     {{ type.name }}
                 </h2>
+                <h2 v-else>Please select a type</h2>
                 <!-- <p>{{ type.description }}</p> -->
             </div>
         </script>
