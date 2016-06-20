@@ -19,7 +19,7 @@
     </head>
     <body>
         <div id="market">
-            <div class="row" v-if="isFinishedLoading()">
+            <div class="row" v-if="allLoaded">
                 <div class="col-sm-2">
 <!--                     <select id="regionSelection" class="form-control">
                         <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
@@ -29,7 +29,7 @@
                     </ul>
                 </div>
                 <div class="col-sm-10">
-                    <type-header v-bind:selected-type="selectedType"></type-header>
+                    <type-header v-bind:type-data="typeData"></type-header>
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#orders" role="tab">Orders</a>
@@ -44,7 +44,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="orders" role="tabpanel"><orders v-bind:selected-type="selectedType"></orders></div>
                         <div class="tab-pane" id="history" role="tabpanel">History Graph Here</div>
-                        <div class="tab-pane" id="info" role="tabpanel">Show Info Information Here</div>
+                        <div class="tab-pane" id="info" role="tabpanel"><info v-bind:type-data="typeData"></info></div>
                     </div>
                 </div>
             </div>
@@ -109,12 +109,20 @@
 
         <script type="text/x-template" id="type-header-template">
             <div>
-                <h2 v-if="type">
+                <h2 v-if="typeData">
                     <img v-bind:src="imageUrl" class="img-rounded">
-                    {{ type.name }}
+                    {{ typeData.name }}
                 </h2>
                 <h2 v-else>Please select a type</h2>
-                <!-- <p>{{ type.description }}</p> -->
+            </div>
+        </script>
+
+        <script type="text/x-template" id="info-template">
+            <div>
+                <p>{{ typeData.description }}</p>
+                <ul>
+                    <li v-for="attr in typeData.dogma.attributes">{{ attr.attribute.name }} {{ attr.value }}</li>
+                </ul>
             </div>
         </script>
 

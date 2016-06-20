@@ -134,41 +134,25 @@ Vue.component('orders', {
 
 Vue.component('type-header', {
   template: '#type-header-template',
-  data: function() {
-    return {
-      type: null
-    }
-  },
 
   props: [
-    'selectedType'
+    'typeData'
   ],
-
-  watch: {
-    selectedType: function() {
-      this.updateType();
-    }
-  },
-
-  created: function() {
-    if (this.selectedType) {
-      this.updateType();
-    }
-  },
 
   computed: {
     imageUrl: function() {
-      return getTypeImageUrl(this.type.id, 32);
+      return getTypeImageUrl(this.typeData.id, 32);
     }
   },
+})
 
-  methods: {
-    "updateType": function() {
-      this.$http.get(this.selectedType).then(function(response) {
-        this.type = response.data;
-      })
-    }
-  }
+
+Vue.component('info', {
+  template: '#info-template',
+
+  props: [
+    'typeData'
+  ]
 })
 
 
@@ -203,7 +187,8 @@ new Vue({
     regionsLoaded: false,
     groupsLoaded: false,
     allLoaded: false,
-    selectedType: null
+    selectedType: null,
+    typeData: null
   },
 
   watch: {
@@ -221,13 +206,15 @@ new Vue({
 
     selectedType: function(value, oldValue) {
       window.history.pushState("object or string", "Title", "?type=" + value);
+      this.updateType();
     }
   },
 
   created: function() {
     qs = getQueryParams()
     if (qs.hasOwnProperty("type")) {
-      this.selectedType = qs.type
+      this.selectedType = qs.type;
+      this.updateType();
     }
 
     this.$http.get(BASE_CREST_URL).then(function(response) {
@@ -284,8 +271,10 @@ new Vue({
       });
     },
 
-    "isFinishedLoading": function() {
-      return this.allLoaded;
+    "updateType": function() {
+      this.$http.get(this.selectedType).then(function(response) {
+        this.typeData = response.data;
+      })
     }
   },
 });
