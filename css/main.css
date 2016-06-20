@@ -12,7 +12,7 @@ body {
 }
 
 .tree-container {
-    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .tree {
@@ -22,7 +22,7 @@ body {
 }
 
 .tree-entry {
-    padding-left: 15px;
+    padding-left: 10px;
     font-size: 14px;
 }
 

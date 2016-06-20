@@ -54,6 +54,12 @@ Vue.component('market-item', {
     'selectedType'
   ],
 
+  computed: {
+    imageUrl: function() {
+      return getTypeImageUrl(this.model.type.id, 32);
+    }
+  },
+
   methods: {
     selected: function() {
       this.selectedType = this.model.type.href;
@@ -120,7 +126,7 @@ Vue.component('orders', {
 
         this.buyOrders = tmpBuyOrders;
         this.sellOrders = tmpSellOrders;
-      })     
+      })
     }
   }
 })
@@ -150,11 +156,17 @@ Vue.component('type-header', {
     }
   },
 
+  computed: {
+    imageUrl: function() {
+      return getTypeImageUrl(this.type.id, 32);
+    }
+  },
+
   methods: {
     "updateType": function() {
       this.$http.get(this.selectedType).then(function(response) {
         this.type = response.data;
-      }) 
+      })
     }
   }
 })
@@ -289,4 +301,9 @@ function getQueryParams() {
   }
 
   return params;
+}
+
+
+function getTypeImageUrl(typeID, size) {
+  return "https://image.eveonline.com/Type/" + typeID + "_" + size + ".png"
 }
