@@ -63,7 +63,7 @@
                 </tbody>
             </table>
             <h3>Buy Orders</h3>
-            <table class="table orders table-sm" id="sellOrdersTable">
+            <table class="table orders table-sm" id="buyOrdersTable">
                 <thead>
                     <tr>
                         <th>Location</th>
@@ -72,7 +72,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="order in sellOrders">
+                    <tr v-for="order in buyOrders">
                         <td>{{ order.location.name }}</td>
                         <td class="text-sm-right">{{ order.price | isk }}</td>
                         <td class="text-sm-right">{{ order.volume }}</td>
