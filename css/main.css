@@ -1,17 +1,8 @@
 
 
-@font-face{
-    font-family: "evesansneue";
-    src: url("../fonts/evesansneue-regular.ttf")
-}
-
-body {
-    color: #ffffff;
-    background: #282828;
-    font-family: evesansneue;
-}
-
 .tree-container {
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .tree {
