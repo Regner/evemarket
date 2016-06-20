@@ -11,6 +11,10 @@ body {
     font-family: evesansneue;
 }
 
+.tree-container {
+    overflow-y: scroll;
+}
+
 .tree {
     margin: 0;
     padding: 0;
