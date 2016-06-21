@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row" v-if="allLoaded">
       <div class="col-sm-2">
-          <navigation></navigation>
+          <navigation v-bind:market-groups-list="marketGroupsList"></navigation>
       </div>
       <div class="col-sm-10">
       </div>
