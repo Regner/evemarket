@@ -1,7 +1,7 @@
 <template>
 <div>
   <ul>
-    <navigation-group v-for="mg in marketGroupsList" v-bind:group="mg"></navigation-group>
+    <navigation-group v-for="mg in marketGroupsList" v-bind:group="mg" v-bind:selected-type.sync="selectedType"></navigation-group>
   </ul>
 </div>
 </template>
@@ -17,18 +17,15 @@ export default {
   },
 
   props: [
-    'marketGroupsList'
-  ],
-
-  data () {
-    return {
-    }
-  },
-
-  created () {
-  }
+    'marketGroupsList',
+    'selectedType'
+  ]
 }
 </script>
 
 <style>
+ul {
+  padding-left: 10px;
+  list-style-type: none;
+}
 </style>

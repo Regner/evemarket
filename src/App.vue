@@ -2,9 +2,10 @@
   <div class="container-fluid">
     <div class="row" v-if="allLoaded">
       <div class="col-sm-2">
-          <navigation v-bind:market-groups-list="marketGroupsList"></navigation>
+        <navigation v-bind:market-groups-list="marketGroupsList" v-bind:selected-type.sync="selectedType"></navigation>
       </div>
       <div class="col-sm-10">
+        <content v-bind:selected-type="selectedType" v-bind:type-data="typeData"></content>
       </div>
     </div>
     <div v-else>
@@ -15,6 +16,7 @@
 
 <script>
 import Navigation from './components/Navigation.vue'
+import Content from './components/Content.vue'
 
 var BASE_CREST_URL = 'https://crest-tq.eveonline.com/'
 
@@ -22,7 +24,8 @@ export default {
   name: 'app',
 
   components: {
-    Navigation
+    Navigation,
+    Content
   },
 
   data: function () {
@@ -58,12 +61,6 @@ export default {
   },
 
   created: function () {
-    var qs = getQueryParams()
-    if (qs.hasOwnProperty('type')) {
-      this.selectedType = qs.type
-      this.updateType()
-    }
-
     this.$http.get(BASE_CREST_URL).then(function (response) {
       this.getMarketGroups(response.data.marketGroups.href)
       this.getRegions(response.data.regions.href)
@@ -124,20 +121,6 @@ export default {
       })
     }
   }
-}
-
-function getQueryParams () {
-  var qs = document.location.search.split('+').join(' ')
-
-  var params = {}
-  var tokens = /[?&]?([^=]+)=([^&]*)/g
-  var re = /[?&]?([^=]+)=([^&]*)/g
-
-  while (tokens === re.exec(qs)) {
-    params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2])
-  }
-
-  return params
 }
 </script>
 

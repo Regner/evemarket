@@ -1,10 +1,10 @@
 <template>
 <li>
-  <label v-on:click="toggle">{{ group.name }}</label>
+  <label v-on:click="toggle"><span class="glyphicon {{open ? 'glyphicon-chevron-down' : 'glyphicon-chevron-right'}}"></span> {{ group.name }}</label>
     <ul v-show="open">
-      <navigation-group v-for="mg in group.children" v-bind:group="mg"></navigation-group>
+      <navigation-group v-for="mg in group.children" v-bind:group="mg" v-bind:selected-type.sync="selectedType"></navigation-group>
       <div v-if="group.typesDownloaded">
-        <navigation-item  v-for="item in group.typeChildren" v-bind:item="item"></market-item>
+        <navigation-item  v-for="item in group.typeChildren" v-bind:item="item" v-bind:selected-type.sync="selectedType"></market-item>
       </div>
     </ul>
 </li>
@@ -21,7 +21,8 @@ export default {
   },
 
   props: [
-    'group'
+    'group',
+    'selectedType'
   ],
 
   data () {

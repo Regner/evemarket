@@ -1,27 +1,29 @@
 <template>
-<li>
-  <img width="16" height="16" v-bind:src="imageUrl" class="img-rounded">
+<li v-on:click="selected">
+  <img width="16" height="16" v-bind:src="imageUrl">
   <label>{{ item.type.name }}</label>
 </li>
 </template>
 
 <script>
-import getTypeImageUrl from '../utilities/imageserver.js'
-
 export default {
   name: 'NavigationItem',
 
   props: [
-    'item'
+    'item',
+    'selectedType'
   ],
 
   computed: {
     imageUrl: function () {
-      return getTypeImageUrl(this.item.type.id, 32)
+      return 'https://image.eveonline.com/Type/' + this.item.type.id + '_' + 32 + '.png'
     }
   },
 
-  created () {
+  methods: {
+    selected: function () {
+      this.selectedType = this.item.type.href
+    }
   }
 }
 </script>
