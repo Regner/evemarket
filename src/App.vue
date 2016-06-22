@@ -61,6 +61,14 @@ export default {
   },
 
   created: function () {
+    var url = window.location.href
+    var captured = /type=([^&]+)/.exec(url)
+
+    if (captured) {
+      this.selectedType = captured[1]
+      this.updateType()
+    }
+
     this.$http.get(BASE_CREST_URL).then(function (response) {
       this.getMarketGroups(response.data.marketGroups.href)
       this.getRegions(response.data.regions.href)
