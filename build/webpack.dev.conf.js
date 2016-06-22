@@ -14,6 +14,11 @@ module.exports = merge(baseWebpackConfig, {
   module: {
     loaders: utils.styleLoaders()
   },
+  output: {
+    path: config.build.assetsRoot,
+    publicPath: config.dev.assetsPublicPath,
+    filename: '[name].js'
+  },
   // eval-source-map is faster for development
   devtool: '#eval-source-map',
   plugins: [
