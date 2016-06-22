@@ -1,138 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <title>EVE Online Market</title>
+  <head>
+    <meta charset="utf-8">
+    <title>evebrowser</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css">
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css">
-        <link rel="stylesheet" href="css/main.css">
-
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-42648820-5', 'auto');
-            ga('send', 'pageview');
-        </script>
-    </head>
-    <body>
-        <div class="container-fluid" id="market">
-            <div class="row" v-if="allLoaded">
-                <div class="col-sm-2">
-<!--                     <select id="regionSelection" class="form-control">
-                        <option v-for="region in regions" value="{{ region.id }}">{{ region.name }}</option>
-                    </select> -->
-                    <ul class="tree tree-container nav nav-pills nav-stacked">
-                        <market-group v-for="mg in marketGroupsList" v-bind:model="mg" v-bind:selected-type.sync="selectedType"></market-group>
-                    </ul>
-                </div>
-                <div class="col-sm-10">
-                    <type-header v-bind:type-data="typeData"></type-header>
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#orders" role="tab">Orders</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#history" role="tab">History</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#info" role="tab">Info</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="orders" role="tabpanel"><orders v-bind:selected-type="selectedType"></orders></div>
-                        <div class="tab-pane" id="history" role="tabpanel">History Graph Here</div>
-                        <div class="tab-pane" id="info" role="tabpanel"><info v-bind:type-data="typeData"></info></div>
-                    </div>
-                </div>
-            </div>
-            <div v-else>
-                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">Loading...</div>
-            </div>
-        </div>
-
-        <script type="text/x-template" id="market-group-template">
-            <li class="tree-entry">
-                <label v-on:click="toggle">{{ model.name }}</label>
-                <ul v-show="open" class="tree">
-                    <market-group  v-for="model in model.children" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-group>
-                    <div v-if="model.typesDownloaded">
-                        <market-item  v-for="model in model.typeChildren" v-bind:model="model" v-bind:selected-type.sync="selectedType"></market-item>
-                    </div>
-                </ul>
-            </li>
-        </script>
-
-        <script type="text/x-template" id="market-item-template">
-            <li class="tree-entry">
-                <img width="16" height="16" v-bind:src="imageUrl" class="img-rounded">
-                <label v-on:click="selected">{{ model.type.name }}</label>
-            </li>
-        </script>
-
-        <script type="text/x-template" id="orders-template">
-            <h3>Sell Orders</h3>
-            <table class="table orders table-condensed table-hover" id="sellOrdersTable">
-                <thead>
-                    <tr>
-                        <th class="text-sm-center">Location</th>
-                        <th class="text-sm-center">Price</th>
-                        <th class="text-sm-center">Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="order in sellOrders">
-                        <td>{{ order.location.name }}</td>
-                        <td class="text-sm-right">{{ order.price | isk }}</td>
-                        <td class="text-sm-right">{{ order.volume }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Buy Orders</h3>
-            <table class="table orders table-condensed table-hover" id="buyOrdersTable">
-                <thead>
-                    <tr>
-                        <th>Location</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="order in buyOrders">
-                        <td>{{ order.location.name }}</td>
-                        <td class="text-sm-right">{{ order.price | isk }}</td>
-                        <td class="text-sm-right">{{ order.volume }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </script>
-
-        <script type="text/x-template" id="type-header-template">
-            <div>
-                <h2 v-if="typeData">
-                    <img v-bind:src="imageUrl" class="img-rounded">
-                    {{ typeData.name }}
-                </h2>
-                <h2 v-else>Please select a type</h2>
-            </div>
-        </script>
-
-        <script type="text/x-template" id="info-template">
-            <div>
-                <p>{{ typeData.description }}</p>
-                <ul>
-                    <li v-for="attr in typeData.dogma.attributes">{{ attr.attribute.name }} {{ attr.value }}</li>
-                </ul>
-            </div>
-        </script>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.7.2/vue-resource.min.js"></script>
-        <script src="js/app.js"></script>
-    </body>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-42648820-5', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </head>
+  <body>
+    <app></app>
+    <!-- built files will be auto injected -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
 </html>
