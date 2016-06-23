@@ -1,9 +1,9 @@
 <template>
-  <h3>Sell Orders</h3>
-  <orders-table v-bind:orders="sellOrders"></orders-table>
+<h3>Sell Orders</h3>
+<orders-table v-bind:orders="sellOrders"></orders-table>
 
-  <h3>Buy Orders</h3>
-  <orders-table v-bind:orders="buyOrders"></orders-table>
+<h3>Buy Orders</h3>
+<orders-table v-bind:orders="buyOrders"></orders-table>
 </template>
 
 <script>

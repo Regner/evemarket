@@ -1,13 +1,13 @@
 <template>
-  <div v-if="rows">
-    <vue-chart
-      chart-type="ComboChart"
-      v-bind:columns="columns"
-      v-bind:rows="rows"
-      v-bind:options="options">
-    </vue-chart>
-  </div>
-  <div v-else>Please select a type</div>
+<div v-if="rows">
+  <vue-chart
+    chart-type="ComboChart"
+    v-bind:columns="columns"
+    v-bind:rows="rows"
+    v-bind:options="options">
+  </vue-chart>
+</div>
+<div v-else>Please select a type</div>
 </template>
 
 <script>

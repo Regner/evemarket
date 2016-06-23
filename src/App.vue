@@ -125,6 +125,13 @@ export default {
 
     'updateType': function () {
       this.$http.get(this.selectedType).then(function (response) {
+        var tmpDogmaAttributes = {}
+        response.data.dogma.attributes.forEach(function (attribute) {
+          tmpDogmaAttributes[attribute.attribute.id] = attribute
+        })
+
+        response.data.dogma.attributeLookup = tmpDogmaAttributes
+
         this.typeData = response.data
       })
     }

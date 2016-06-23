@@ -1,6 +1,6 @@
 <template>
-  <h2 v-if="typeData"><img v-bind:src="imageUrl"> {{ typeData.name }}</h2>
-  <h2 v-else>Please select a type</h2>
+<h2 v-if="typeData"><img v-bind:src="imageUrl"> {{ typeData.name }}</h2>
+<h2 v-else>Please select a type</h2>
 </template>
 
 <script>
