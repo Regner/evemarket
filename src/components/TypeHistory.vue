@@ -1,6 +1,7 @@
 <template>
-  <div v-if="selectedType">
+  <div v-if="rows">
     <vue-chart
+      chart-type="ComboChart"
       v-bind:columns="columns"
       v-bind:rows="rows"
       v-bind:options="options">
@@ -39,17 +40,35 @@ export default {
           'label': 'Volume'
         }
       ],
-      rows: [
-        ['2015-05-01T00:00:00', 327999999.97, 327999999.97, 327999999.97, 5],
-        ['2015-05-04T00:00:00', 282000007.26, 315999999.99, 265000010.9, 10],
-        ['2015-05-07T00:00:00', 309999999.99, 309999999.99, 309999999.99, 3]
-      ],
+      rows: null,
       options: {
+        title: 'Market History',
+        seriesType: 'bars',
         series: {
-          4: {
-            targetAxisIndex: 1
+          0: {
+            type: 'line'
+          },
+          1: {
+            type: 'line'
+          },
+          2: {
+            type: 'line'
+          },
+          3: {
+            type: 'bar',
+            targetAxisIndex: 2
           }
-        }
+        },
+        vAxes: {
+          1: {
+            title: ''
+          },
+          2: {
+            title: ''
+          }
+        },
+        width: 1200,
+        height: 400
       }
     }
   },
@@ -72,15 +91,15 @@ export default {
 
   methods: {
     'updateHistory': function () {
-      // this.columns = ['thing', 'test 1', 'test 2', 'test 3']
-      // this.rows = [
-      //   [1, 10, 10, 10],
-      //   [2, 10, 11, 12],
-      //   [3, 10, 15, 20]
-      // ]
+      var tmpRows = []
 
       this.$http.get(DEFAULT_REGION, {'type': this.selectedType}).then(function (response) {
-        console.log(response)
+        response.data.items.forEach(function (day) {
+          var date = day.date.substring(0, 10)
+          tmpRows.push([date, day.avgPrice, day.highPrice, day.lowPrice, day.volume])
+        })
+
+        this.rows = tmpRows
       })
     }
   }
