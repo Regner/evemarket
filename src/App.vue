@@ -1,10 +1,10 @@
 <template>
   <div class="container-fluid">
     <div class="row" v-if="allLoaded">
-      <div class="col-sm-2">
+      <div class="col-sm-3">
         <navigation v-bind:market-groups-list="marketGroupsList" v-bind:selected-type.sync="selectedType"></navigation>
       </div>
-      <div class="col-sm-10">
+      <div class="col-sm-9">
         <content v-bind:selected-type="selectedType" v-bind:type-data="typeData"></content>
       </div>
     </div>
