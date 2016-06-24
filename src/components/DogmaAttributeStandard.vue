@@ -1,5 +1,5 @@
 <template>
-<li>{{ name }}<span class="pull-right">{{ value | formattedNumber}}</span></li>
+<li>{{ name }}<span class="pull-right">{{ value | formattedNumber }}</span></li>
 </template>
 
 <script>
