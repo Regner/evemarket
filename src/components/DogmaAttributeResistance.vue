@@ -1,5 +1,7 @@
 <template>
-<div class="dogmaAttributeResistance" v-bind:class="resistanceStyle">{{ computedValue }}</div>
+<div class="dogmaAttributeResistance" v-bind:class="resistanceStyle">
+  <div class="resistanceInner" v-bind:style="{width: computedValue + '%'}">{{ computedValue }}%</div>
+</div>
 </template>
 
 <script>
@@ -73,28 +75,31 @@ export default {
 }
 </script>
 
-<style>
-.dogmaAttributeResistance {
-  margin: 0 10px;
-  float: left;
-  position: relative;
-  width: 22%;
-  text-align: center;
-}
+<style lang="stylus">
+.dogmaAttributeResistance
+  margin 0 5px
+  /*float left*/
+  /*position relative*/
+  width 24%
+  text-align center
 
-.emResistance {
-  background-color: rgba(51, 153, 255, 0.30);
-}
+.emResistance
+  background-color rgba(51, 153, 255, 0.30)
+  .resistanceInner
+    background-color rgb(51, 153, 255)
 
-.thermalResistance {
-  background-color: rgba(210, 0, 0, 0.30);
-}
+.thermalResistance
+  background-color rgba(180, 0, 0, 0.30)
+  .resistanceInner
+    background-color rgb(180, 0, 0)
 
-.explosiveResistance {
-  background-color: rgba(239, 213, 58, 0.30);
-}
+.explosiveResistance
+  background-color rgba(200, 150, 58, 0.30)
+  .resistanceInner
+    background-color rgb(200, 150, 58)
 
-.kineticResistance {
-  background-color: rgba(178, 178, 178, 0.30);
-}
+.kineticResistance
+  background-color rgba(178, 178, 178, 0.30)
+  .resistanceInner
+    background-color rgb(178, 178, 178)
 </style>

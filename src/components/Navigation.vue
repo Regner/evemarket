@@ -23,9 +23,8 @@ export default {
 }
 </script>
 
-<style>
-ul {
-  padding-left: 10px;
-  list-style-type: none;
-}
+<style lang="stylus">
+ul
+  padding-left 10px
+  list-style-type none
 </style>
