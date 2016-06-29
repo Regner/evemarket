@@ -55,7 +55,7 @@ export default {
 
   computed: {
     computedValue: function () {
-      return (1.0 - this.value).toFixed(2) * 100
+      return ((1.0 - this.value) * 100).toFixed(0)
     },
 
     resistanceStyle: function () {
