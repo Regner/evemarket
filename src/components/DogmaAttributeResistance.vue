@@ -77,11 +77,11 @@ export default {
 
 <style lang="stylus">
 .dogmaAttributeResistance
-  margin 0 5px
-  /*float left*/
-  /*position relative*/
-  width 24%
+  margin 0
+  width 25%
   text-align center
+  float left
+  display inline-block
 
 .emResistance
   background-color rgba(51, 153, 255, 0.30)
